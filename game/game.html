@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Space Shooter Game</title>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500&family=Rubik:wght@400;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="game-container">
+    <div class="canvas-container">
+      <canvas id="gameCanvas" width="800" height="600"></canvas>
+      <div id="gameOver" class="game-over" style="display: none;">
+        <h2>Game Over!</h2>
+        <p>Final Score: <span id="finalScore"></span></p>
+        <p>High Score: <span id="highScore"></span></p>
+        <button onclick="startNewGame()">Play Again</button>
+      </div>
+    </div>
+
+    <div class="score-board">
+      <div>Score: <span id="score">0</span></div>
+      <div>High Score: <span id="highScoreDisplay">0</span></div>
+    </div>
+
+    <!-- Mobile control buttons -->
+    <div class="controls">
+      <button id="shootButton">Shoot</button>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
