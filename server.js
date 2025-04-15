@@ -29,7 +29,9 @@ app.get("/", (req, res) => {
 app.get("/game", (req, res) => {
   res.sendFile(path.join(__dirname, "game", "game.html"));
 });
-
+app.get("/terminal", (req, res) => {
+  res.sendFile(path.join(__dirname, "private", "terminal.html"));
+});
 // Start Server
 app.listen(port, '0.0.0.0', () => {
   console.log(`Server is running on http://0.0.0.0:${port}`);
