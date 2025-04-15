@@ -30,7 +30,7 @@ app.get("/game", (req, res) => {
   res.sendFile(path.join(__dirname, "game", "game.html"));
 });
 app.get("/terminal", (req, res) => {
-  res.sendFile(path.join(__dirname, "private", "terminal.html"));
+  res.sendFile(path.join(__dirname, "terminal.html"));
 });
 // Start Server
 app.listen(port, '0.0.0.0', () => {
