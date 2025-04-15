@@ -1,0 +1,107 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Hidden Terminal</title>
+  <style>
+    body {
+      background: black;
+      color: lime;
+      font-family: monospace;
+      margin: 0;
+      padding: 1rem;
+    }
+    #login, #terminal {
+      max-width: 800px;
+      margin: auto;
+    }
+    input {
+      width: 100%;
+      background: black;
+      border: 1px solid lime;
+      color: lime;
+      padding: 10px;
+      margin: 5px 0;
+      font-family: monospace;
+    }
+    button {
+      background: lime;
+      color: black;
+      padding: 10px 20px;
+      font-weight: bold;
+      border: none;
+      cursor: pointer;
+    }
+    #output {
+      white-space: pre-wrap;
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+  <!-- Login Screen -->
+  <div id="login">
+    <h2>Login</h2>
+    <input type="text" id="username" placeholder="Username" />
+    <input type="password" id="password" placeholder="Password" />
+    <button onclick="login()">Login</button>
+    <div id="status"></div>
+  </div>
+
+  <!-- Terminal Interface (hidden by default) -->
+  <div id="terminal" style="display:none;">
+    <div id="output"></div>
+    <input type="text" id="command" placeholder="Enter command and press Enter" autofocus />
+  </div>
+
+  <script>
+    function login() {
+      const username = document.getElementById('username').value;
+      const password = document.getElementById('password').value;
+
+      fetch('/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ username, password })
+      })
+      .then(res => {
+        if (!res.ok) throw new Error("Login failed");
+        return res.json();
+      })
+      .then(() => {
+        // Hide login, show terminal
+        document.getElementById('login').style.display = 'none';
+        document.getElementById('terminal').style.display = 'block';
+        document.getElementById('command').focus();
+      })
+      .catch(() => {
+        document.getElementById('status').innerText = 'Invalid credentials';
+      });
+    }
+
+    // Terminal interaction
+    const cmdInput = document.getElementById('command');
+    const output = document.getElementById('output');
+
+    cmdInput?.addEventListener('keydown', function(e) {
+      if (e.key === 'Enter') {
+        const cmd = cmdInput.value;
+        cmdInput.value = '';
+        output.innerHTML += `\n> ${cmd}`;
+
+        fetch('/execute', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ command: cmd })
+        })
+        .then(res => res.text())
+        .then(text => {
+          output.innerHTML += `\n${text}`;
+          window.scrollTo(0, document.body.scrollHeight);
+        });
+      }
+    });
+  </script>
+</body>
+</html>
