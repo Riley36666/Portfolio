@@ -44,24 +44,31 @@ input.addEventListener("keydown", async (e) => {
 
   // TAB for autocomplete
   if (e.key === "Tab") {
-    console.log("Tab pressed");
     e.preventDefault();
+  
     try {
       const res = await fetch("/autocomplete", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ command }),
       });
-
-      const suggestion = await res.text();
-      if (suggestion && suggestion !== command) {
-        input.value = suggestion;
+  
+      const contentType = res.headers.get("content-type");
+  
+      if (contentType && contentType.includes("application/json")) {
+        const data = await res.json();
+        appendOutput(data.suggestions.join("    "));
+      } else {
+        const suggestion = await res.text();
+        if (suggestion && suggestion !== command) {
+          input.value = suggestion;
+        }
       }
-    } catch {
+    } catch (err) {
       appendOutput("Autocomplete failed");
     }
-    return;
   }
+  
 
   // ENTER to execute command
   if (e.key === "Enter") {
