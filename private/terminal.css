@@ -1,0 +1,42 @@
+body {
+    margin: 0;
+    background-color: #111;
+    color: #0f0;
+    font-family: monospace;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  #terminal {
+    flex: 1;
+    padding: 10px;
+    overflow-y: auto;
+    white-space: pre-wrap;
+  }
+
+  #input-line {
+    display: flex;
+    padding: 10px;
+    border-top: 1px solid #333;
+  }
+
+  #prompt {
+    color: #0f0;
+    margin-right: 5px;
+  }
+
+  #command {
+    background: transparent;
+    border: none;
+    outline: none;
+    color: #0f0;
+    flex: 1;
+    font-family: inherit;
+    font-size: 1em;
+  }
+
+  ::selection {
+    background: #0f0;
+    color: #111;
+  }

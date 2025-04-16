@@ -9,8 +9,6 @@ const path = require('path');
 const { pathToFileURL } = require('url');
 const app = express();
 const port = 3000;
-const ttydPort = 7681;
-const { createProxyMiddleware } = require('http-proxy-middleware');
 const { exec } = require('child_process');
 let currentDirectory = process.env.HOME || '/home/knowles'; // Starting dir
 
@@ -78,14 +76,6 @@ app.get("/game", (req, res) => {
 app.get("/terminal", (req, res) => {
   res.sendFile(path.join(__dirname, "private", "terminal.html"));
 });
-app.use('/now', createProxyMiddleware({
-  target: `http://localhost:${ttydPort}`,
-  changeOrigin: true,
-  ws: true,  // Ensure WebSocket support for ttyd
-  pathRewrite: {
-      '^/terminal': '/',  // Rewrite the URL path if necessary
-  },
-}));
 app.post("/autocomplete", (req, res) => {
   const { command } = req.body;
 

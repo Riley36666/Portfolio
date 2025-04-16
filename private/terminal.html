@@ -3,50 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <title>Web Terminal</title>
-  <style>
-    body {
-      margin: 0;
-      background-color: #111;
-      color: #0f0;
-      font-family: monospace;
-      height: 100vh;
-      display: flex;
-      flex-direction: column;
-    }
-
-    #terminal {
-      flex: 1;
-      padding: 10px;
-      overflow-y: auto;
-      white-space: pre-wrap;
-    }
-
-    #input-line {
-      display: flex;
-      padding: 10px;
-      border-top: 1px solid #333;
-    }
-
-    #prompt {
-      color: #0f0;
-      margin-right: 5px;
-    }
-
-    #command {
-      background: transparent;
-      border: none;
-      outline: none;
-      color: #0f0;
-      flex: 1;
-      font-family: inherit;
-      font-size: 1em;
-    }
-
-    ::selection {
-      background: #0f0;
-      color: #111;
-    }
-  </style>
+  <link rel="stylesheet" href="terminal.css" />
 </head>
 <body>
   <div id="terminal"></div>
@@ -55,87 +12,6 @@
     <input type="text" id="command" autofocus autocomplete="off" />
   </div>
 
-  <script>
-    const terminal = document.getElementById("terminal");
-    const input = document.getElementById("command");
-    const promptText = document.getElementById("prompt").textContent;
-
-    function appendOutput(text) {
-      terminal.innerHTML += text + "\n";
-      terminal.scrollTop = terminal.scrollHeight;
-    }
-
-    input.addEventListener("keydown", async (e) => {
-      if (e.key === "Enter") {
-        const command = input.value.trim();
-        appendOutput(promptText + " " + command);
-        input.value = "";
-
-        if (command) {
-          try {
-            const res = await fetch("/execute", {
-              method: "POST",
-              headers: { "Content-Type": "application/json" },
-              body: JSON.stringify({ command }),
-            });
-
-            const text = await res.text();
-            appendOutput(text);
-          } catch (err) {
-            appendOutput("Error contacting server");
-          }
-        }
-      }
-    });
-    input.addEventListener("keydown", async (e) => {
-  if (e.key === "Tab") {
-    e.preventDefault();
-
-    const command = input.value;
-
-    try {
-      const res = await fetch("/autocomplete", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ command }),
-      });
-
-      const suggestion = await res.text();
-
-      // If we got a suggestion, add it to the input
-      if (suggestion && suggestion !== command) {
-        input.value = suggestion;
-      }
-    } catch (err) {
-      appendOutput("Autocomplete failed");
-    }
-
-    return;
-  }
-
-  // ENTER to execute command
-  if (e.key === "Enter") {
-    const command = input.value.trim();
-    appendOutput(promptText + " " + command);
-    input.value = "";
-
-    if (command) {
-      try {
-        const res = await fetch("/execute", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ command }),
-        });
-
-        const text = await res.text();
-        appendOutput(text);
-      } catch (err) {
-        appendOutput("Error contacting server");
-      }
-    }
-  }
-});
-
-  </script>
+  <script src="terminal.js"></script></script>
 </body>
 </html>
