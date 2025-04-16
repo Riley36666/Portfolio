@@ -79,31 +79,25 @@ app.get("/terminal", (req, res) => {
 app.post("/autocomplete", (req, res) => {
   const { command } = req.body;
 
-  // Get the last word the user typed (to autocomplete just that part)
-  const lastWord = command.split(" ").pop();
+  const words = command.split(" ");
+  const lastWord = words.pop();
 
-  // Use compgen to get matching completions
-  const shellCmd = `bash -c 'compgen -c -- ${lastWord}'`;
-
-  exec(shellCmd, (err, stdout, stderr) => {
+  exec(`bash -c 'compgen -c -- "${lastWord}"'`, (err, stdout, stderr) => {
     if (err || stderr) {
-      return res.send(command); // Return the original if there's an error
+      return res.send(command); // fallback
     }
 
     const suggestions = stdout.split("\n").filter(Boolean);
 
-    if (suggestions.length === 1) {
-      // Replace the last word with the suggestion
-      const updatedCommand = command.replace(new RegExp(`${lastWord}$`), suggestions[0]);
-      return res.send(updatedCommand);
-    } else if (suggestions.length > 1) {
-      // Just show suggestions to the user (optional)
-      return res.json({ suggestions, partial: command });
+    if (suggestions.length > 0) {
+      words.push(suggestions[0]); // always use the first one
+      return res.send(words.join(" "));
     }
 
-    res.send(command); // No match
+    return res.send(command); // no suggestions
   });
 });
+
 
 
 

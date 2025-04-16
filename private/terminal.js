@@ -45,30 +45,46 @@ input.addEventListener("keydown", async (e) => {
   // TAB for autocomplete
   if (e.key === "Tab") {
     e.preventDefault();
-  
+
     try {
       const res = await fetch("/autocomplete", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ command }),
       });
-  
-      const contentType = res.headers.get("content-type");
 
-      if (contentType && contentType.includes("application/json")) {
-        const data = await res.json();
-        appendOutput(data.suggestions.join("    "));
-      } else {
-        const suggestion = await res.text();
-        if (suggestion && suggestion !== command) {
-          input.value = suggestion;
-        }
-      }
-      
+      const suggestion = await res.text();
+      input.value = suggestion;
     } catch (err) {
       appendOutput("Autocomplete failed");
     }
+
+    return;
   }
+
+  if (e.key === "Enter") {
+    const trimmed = input.value.trim();
+    appendOutput(promptText + " " + trimmed);
+    input.value = "";
+
+    if (trimmed) {
+      try {
+        const res = await fetch("/execute", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ command: trimmed }),
+        });
+
+        const text = await res.text();
+        appendOutput(text);
+      } catch (err) {
+        appendOutput("Error contacting server");
+      }
+    }
+
+    return;
+  }
+
   
 
   // ENTER to execute command
