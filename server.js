@@ -56,32 +56,50 @@ app.get("/terminal", (req, res) => {
 });
 app.post("/autocomplete", (req, res) => {
   const { command } = req.body;
+  const fs = require('fs');
+  const path = require('path');
 
-  // Get the last word the user typed (to autocomplete just that part)
+  // Split into command and argument
+  const parts = command.trim().split(/\s+/);
+  const cmd = parts[0];
+  const arg = parts[1] || "";
+
+  if (cmd === "cd") {
+    try {
+      const entries = fs.readdirSync(currentDirectory, { withFileTypes: true });
+
+      const dirs = entries
+        .filter(dirent => dirent.isDirectory() && dirent.name.startsWith(arg))
+        .map(dirent => dirent.name);
+
+      return res.json({ suggestions: dirs });
+    } catch (err) {
+      return res.status(500).json({ suggestions: [], error: "Failed to read directory" });
+    }
+  }
+
+  // Default: fallback to shell command autocomplete for normal commands
   const lastWord = command.split(" ").pop();
-
-  // Use compgen to get matching completions
   const shellCmd = `bash -c 'compgen -c -- ${lastWord}'`;
 
   exec(shellCmd, (err, stdout, stderr) => {
     if (err || stderr) {
-      return res.send(command); // Return the original if there's an error
+      return res.send(command); // Return original on error
     }
 
     const suggestions = stdout.split("\n").filter(Boolean);
 
     if (suggestions.length === 1) {
-      // Replace the last word with the suggestion
       const updatedCommand = command.replace(new RegExp(`${lastWord}$`), suggestions[0]);
       return res.send(updatedCommand);
     } else if (suggestions.length > 1) {
-      // Just show suggestions to the user (optional)
       return res.json({ suggestions, partial: command });
     }
 
-    res.send(command); // No match
+    res.send(command);
   });
 });
+
 
 app.post("/execute", (req, res) => {
   const { command } = req.body;
