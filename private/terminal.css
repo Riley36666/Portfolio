@@ -1,7 +1,7 @@
 body {
     margin: 0;
-    background-color: #0d0d0d;
-    color: #00ff66;
+    background-color: #0a0a0a;
+    color: #8be9fd;
     font-family: 'Courier New', Courier, monospace;
     height: 100vh;
     display: flex;
@@ -17,6 +17,7 @@ body {
     line-height: 1.5;
     scroll-behavior: smooth;
     font-size: 1rem;
+    color: #c0e8ff;
   }
   
   /* Custom Scrollbar */
@@ -27,23 +28,23 @@ body {
     background: #111;
   }
   #terminal::-webkit-scrollbar-thumb {
-    background: #00ff66;
+    background: #66ccff;
     border-radius: 4px;
   }
   #terminal::-webkit-scrollbar-thumb:hover {
-    background: #33ff99;
+    background: #99ddff;
   }
   
   #input-line {
     display: flex;
     padding: 12px 16px;
     border-top: 1px solid #222;
-    background-color: #0d0d0d;
-    box-shadow: 0 -1px 0 #00ff66;
+    background-color: #0a0a0a;
+    box-shadow: 0 -1px 0 #66ccff;
   }
   
   #prompt {
-    color: #00ff66;
+    color: #66ccff;
     margin-right: 8px;
     font-weight: bold;
   }
@@ -52,25 +53,25 @@ body {
     background: transparent;
     border: none;
     outline: none;
-    color: #00ff66;
+    color: #66ccff;
     flex: 1;
     font-family: inherit;
     font-size: 1rem;
-    caret-color: #00ff66;
+    caret-color: #66ccff;
   }
   
   #command::placeholder {
-    color: #008844;
-    opacity: 0.6;
+    color: #3399cc;
+    opacity: 0.5;
   }
   
   ::selection {
-    background: #00ff66;
-    color: #0d0d0d;
+    background: #66ccff;
+    color: #0a0a0a;
   }
   
-  /* Optional: subtle glow effect */
+  /* Subtle Glow Effect */
   body, #prompt, #command {
-    text-shadow: 0 0 5px #00ff66;
+    text-shadow: 0 0 6px #66ccff44;
   }
   
