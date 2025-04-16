@@ -1,83 +1,111 @@
-/* Reset and base styles */
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
+/* Global Styles */
 body {
+  margin: 0;
+  background: radial-gradient(circle at top left, #1a1a40, #0f0f2f);
+  color: #e0e0ff;
+  font-family: 'JetBrains Mono', 'Fira Code', monospace;
   height: 100vh;
   display: flex;
   flex-direction: column;
-  background-color: #f4f4f5;
-  font-family: 'Segoe UI', 'Roboto', sans-serif;
-  color: #333;
   overflow: hidden;
 }
 
-/* Terminal output area */
+/* Terminal Window */
 #terminal {
   flex: 1;
   padding: 20px;
   overflow-y: auto;
-  font-size: 0.95rem;
-  line-height: 1.6;
-  background-color: #ffffff;
-  color: #333;
+  white-space: pre-wrap;
+  font-size: 1rem;
+  line-height: 1.5;
+  background: transparent;
+  color: #f5f5ff;
   scroll-behavior: smooth;
-  border-bottom: 1px solid #ddd;
+  text-shadow: 0 0 2px #00f7ff;
 }
 
-/* Scrollbar styling */
+/* Glowing Scrollbar */
 #terminal::-webkit-scrollbar {
-  width: 8px;
+  width: 10px;
 }
 #terminal::-webkit-scrollbar-thumb {
-  background: #ccc;
-  border-radius: 4px;
+  background: #00f7ff;
+  border-radius: 10px;
 }
 #terminal::-webkit-scrollbar-track {
-  background: #f0f0f0;
+  background: transparent;
 }
 
-/* Input area */
+/* Input Line */
 #input-line {
   display: flex;
   align-items: center;
   gap: 10px;
   padding: 16px 20px;
-  background-color: #f9f9f9;
-  border-top: 1px solid #ddd;
-  box-shadow: 0 -1px 5px rgba(0, 0, 0, 0.05);
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  background-color: #151527;
+  box-shadow: 0 -2px 8px rgba(0, 247, 255, 0.2);
 }
 
-/* Prompt text */
+/* Prompt Text */
 #prompt {
-  color: #007acc;
-  font-weight: 600;
-  font-size: 1rem;
+  color: #00f7ff;
+  font-weight: bold;
+  font-size: 1.05rem;
 }
 
-/* Command input */
+/* Command Input */
 #command {
   background: transparent;
   border: none;
   outline: none;
-  color: #333;
+  color: #ffffff;
   flex: 1;
   font-family: inherit;
   font-size: 1rem;
+  caret-color: #00f7ff;
   padding: 4px 0;
+  transition: all 0.2s ease-in-out;
 }
 
+#command:focus {
+  background-color: rgba(255, 255, 255, 0.05);
+  padding: 4px 6px;
+  border-radius: 4px;
+}
+
+/* Placeholder Style */
 #command::placeholder {
-  color: #888;
-  opacity: 0.6;
-  font-style: italic;
+  color: #7a7aa2;
+  opacity: 0.5;
 }
 
-/* Text selection */
+/* Text Selection */
 ::selection {
-  background: #cde7ff;
-  color: #000;
+  background: #00f7ff;
+  color: #1a1a40;
+}
+.terminal-line {
+  white-space: pre-wrap;
+  color: #add8ff;
+  text-shadow: 0 0 3px #00f7ff;
+  animation: fadeIn 0.2s ease-out;
+}
+
+/* Fade effect when line starts */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(2px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.blinking-cursor {
+  display: inline-block;
+  margin-left: 4px;
+  color: #7aa2f7;
+  animation: blink 1s step-start infinite;
+  font-weight: bold;
+}
+
+@keyframes blink {
+  0%, 50% { opacity: 1; }
+  50.01%, 100% { opacity: 0; }
 }

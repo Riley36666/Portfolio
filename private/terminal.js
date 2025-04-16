@@ -6,9 +6,33 @@ let history = [];
 let historyIndex = -1;
 
 function appendOutput(text) {
-  terminal.innerHTML += text.replace(/\n/g, "<br>") + "<br>";
-  terminal.scrollTop = terminal.scrollHeight;
+  const line = document.createElement("div");
+  line.className = "terminal-line";
+
+  const cursor = document.createElement("span");
+  cursor.className = "blinking-cursor";
+  cursor.textContent = "|";
+
+  terminal.appendChild(line);
+  terminal.appendChild(cursor);
+
+  let i = 0;
+  function typeChar() {
+    if (i < text.length) {
+      line.textContent += text.charAt(i);
+      i++;
+      terminal.scrollTop = terminal.scrollHeight;
+      setTimeout(typeChar, 10); // Typing speed
+    } else {
+      terminal.removeChild(cursor); // Remove after typing
+      line.innerHTML += "<br>";
+    }
+  }
+
+  typeChar();
 }
+
+
 
 
 function clearTerminal() {
