@@ -6,9 +6,10 @@ let history = [];
 let historyIndex = -1;
 
 function appendOutput(text) {
-  terminal.innerHTML += text + "\n";
+  terminal.innerHTML += text.replace(/\n/g, "<br>") + "<br>";
   terminal.scrollTop = terminal.scrollHeight;
 }
+
 
 function clearTerminal() {
   terminal.innerHTML = "";
