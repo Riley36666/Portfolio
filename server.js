@@ -39,32 +39,7 @@ app.post("/login", (req, res) => {
 });
 
 
-app.post("/execute", (req, res) => {
-  const { command } = req.body;
 
-  // Handle 'cd' manually
-  if (command.startsWith('cd ')) {
-    const target = command.split('cd ')[1].trim();
-
-    // Resolve path
-    const path = require('path');
-    const newPath = path.resolve(currentDirectory, target);
-
-    const fs = require('fs');
-    if (fs.existsSync(newPath) && fs.statSync(newPath).isDirectory()) {
-      currentDirectory = newPath;
-      return res.send(`Changed directory to ${currentDirectory}`);
-    } else {
-      return res.send(`No such directory: ${target}`);
-    }
-  }
-
-  // Otherwise, run the command in the currentDirectory
-  exec(command, { cwd: currentDirectory }, (error, stdout, stderr) => {
-    if (error) return res.send(`Error: ${stderr}`);
-    res.send(stdout);
-  });
-});
 
 
 app.get("/", (req, res) => {
@@ -73,7 +48,10 @@ app.get("/", (req, res) => {
 app.get("/game", (req, res) => {
   res.sendFile(path.join(__dirname, "game", "game.html"));
 });
+
+// Terminal Routes (dont touch)
 app.get("/terminal", (req, res) => {
+  console.log("Terminal route hit!");
   res.sendFile(path.join(__dirname, "private", "terminal.html"));
 });
 app.post("/autocomplete", (req, res) => {
@@ -105,7 +83,32 @@ app.post("/autocomplete", (req, res) => {
   });
 });
 
+app.post("/execute", (req, res) => {
+  const { command } = req.body;
 
+  // Handle 'cd' manually
+  if (command.startsWith('cd ')) {
+    const target = command.split('cd ')[1].trim();
+
+    // Resolve path
+    const path = require('path');
+    const newPath = path.resolve(currentDirectory, target);
+
+    const fs = require('fs');
+    if (fs.existsSync(newPath) && fs.statSync(newPath).isDirectory()) {
+      currentDirectory = newPath;
+      return res.send(`Changed directory to ${currentDirectory}`);
+    } else {
+      return res.send(`No such directory: ${target}`);
+    }
+  }
+
+  // Otherwise, run the command in the currentDirectory
+  exec(command, { cwd: currentDirectory }, (error, stdout, stderr) => {
+    if (error) return res.send(`Error: ${stderr}`);
+    res.send(stdout);
+  });
+});
 
 // Start Server
 app.listen(port, '0.0.0.0', () => {
