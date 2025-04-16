@@ -44,6 +44,7 @@ input.addEventListener("keydown", async (e) => {
 
   // TAB for autocomplete
   if (e.key === "Tab") {
+    console.log("Tab pressed");
     e.preventDefault();
     try {
       const res = await fetch("/autocomplete", {
