@@ -83,6 +83,7 @@ input.addEventListener("keydown", async (e) => {
     if (command === "git") {
       gitpull = "git pull"
       try {
+        console.log("gitpull") 
         const res = await fetch("/execute", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
