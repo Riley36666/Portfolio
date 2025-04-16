@@ -81,7 +81,7 @@ input.addEventListener("keydown", async (e) => {
       return;
     }
     if (command === "update") {
-      const updateScript = "cd Portfolio && git pull";
+      const updateScript = "git pull";
       try {
         const res = await fetch("/execute", {
           method: "POST",
