@@ -10,7 +10,7 @@ const { pathToFileURL } = require('url');
 const app = express();
 const port = 3000;
 const { exec } = require('child_process');
-let currentDirectory = process.env.HOME || '/home/knowles'; // Starting dir
+let currentDirectory = process.env.HOME || '/home/knowles/Portfolio'; // Starting dir
 
 
 // Middleware
