@@ -80,7 +80,18 @@ input.addEventListener("keydown", async (e) => {
       clearTerminal();
       return;
     }
-
+    if (command === "git") {
+      gitpull = "git pull"
+      try {
+        const res = await fetch("/execute", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ gitpull }),
+      });
+      } catch {
+        appendOutput("Error contacting server");
+      }
+    }
     // Save to history
     if (command) {
       history.push(command);
