@@ -7,6 +7,10 @@ function appendOutput(text) {
   terminal.scrollTop = terminal.scrollHeight;
 }
 
+function clearTerminal() {
+  terminal.innerHTML = ""; // Just wipe it
+}
+
 input.addEventListener("keydown", async (e) => {
   const command = input.value.trim();
 
@@ -37,6 +41,11 @@ input.addEventListener("keydown", async (e) => {
   if (e.key === "Enter") {
     appendOutput(promptText + " " + command);
     input.value = "";
+
+    if (command === "clear") {
+      clearTerminal();
+      return;
+    }
 
     if (command) {
       try {
