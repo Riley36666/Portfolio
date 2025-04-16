@@ -54,7 +54,7 @@ input.addEventListener("keydown", async (e) => {
       });
   
       const contentType = res.headers.get("content-type");
-  
+
       if (contentType && contentType.includes("application/json")) {
         const data = await res.json();
         appendOutput(data.suggestions.join("    "));
@@ -64,6 +64,7 @@ input.addEventListener("keydown", async (e) => {
           input.value = suggestion;
         }
       }
+      
     } catch (err) {
       appendOutput("Autocomplete failed");
     }
