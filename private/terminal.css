@@ -132,7 +132,7 @@ body::after {
   position: fixed;
   top: 0; left: 0;
   width: 100%; height: 100%;
-  background: transparent url('https://i.ibb.co/hMcFfhH/stars.png') repeat;
+  background: transparent url('https://www.istockphoto.com/vector/bright-yellow-star-pixel-art-retro-game-style-icon-vector-illustration-gm1478467075-506732597') repeat;
   animation: starScroll 60s linear infinite;
   z-index: 0;
   pointer-events: none;
