@@ -86,16 +86,15 @@ app.post("/autocomplete", (req, res) => {
     const suggestions = stdout.split("\n").filter(Boolean);
 
     if (suggestions.length === 1) {
-      return res.send(suggestions[0]);
+      return res.send(suggestions[0]); // Autocomplete with exact match
     } else if (suggestions.length > 1) {
-      // If multiple, show list below
-      appendOutput(suggestions.join("    "));
-      return res.send(command); // keep the command as-is
+      return res.json({ suggestions, partial: command });
     }
 
-    res.send(command); // No match, return unchanged
+    res.send(command); // No match
   });
 });
+
 
 // Start Server
 app.listen(port, '0.0.0.0', () => {

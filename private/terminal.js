@@ -1,39 +1,18 @@
 const terminal = document.getElementById("terminal");
-    const input = document.getElementById("command");
-    const promptText = document.getElementById("prompt").textContent;
+const input = document.getElementById("command");
+const promptText = document.getElementById("prompt").textContent;
 
-    function appendOutput(text) {
-      terminal.innerHTML += text + "\n";
-      terminal.scrollTop = terminal.scrollHeight;
-    }
+function appendOutput(text) {
+  terminal.innerHTML += text + "\n";
+  terminal.scrollTop = terminal.scrollHeight;
+}
 
-    input.addEventListener("keydown", async (e) => {
-      if (e.key === "Enter") {
-        const command = input.value.trim();
-        appendOutput(promptText + " " + command);
-        input.value = "";
+input.addEventListener("keydown", async (e) => {
+  const command = input.value.trim();
 
-        if (command) {
-          try {
-            const res = await fetch("/execute", {
-              method: "POST",
-              headers: { "Content-Type": "application/json" },
-              body: JSON.stringify({ command }),
-            });
-
-            const text = await res.text();
-            appendOutput(text);
-          } catch (err) {
-            appendOutput("Error contacting server");
-          }
-        }
-      }
-    });
-    input.addEventListener("keydown", async (e) => {
+  // TAB key for autocomplete
   if (e.key === "Tab") {
     e.preventDefault();
-
-    const command = input.value;
 
     try {
       const res = await fetch("/autocomplete", {
@@ -44,7 +23,6 @@ const terminal = document.getElementById("terminal");
 
       const suggestion = await res.text();
 
-      // If we got a suggestion, add it to the input
       if (suggestion && suggestion !== command) {
         input.value = suggestion;
       }
@@ -55,9 +33,8 @@ const terminal = document.getElementById("terminal");
     return;
   }
 
-  // ENTER to execute command
+  // ENTER key to run command
   if (e.key === "Enter") {
-    const command = input.value.trim();
     appendOutput(promptText + " " + command);
     input.value = "";
 
@@ -75,5 +52,7 @@ const terminal = document.getElementById("terminal");
         appendOutput("Error contacting server");
       }
     }
+
+    return;
   }
 });
