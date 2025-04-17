@@ -1,10 +1,45 @@
+// Elements
+const loginScreen = document.getElementById("login-screen");
+const terminalUI = document.getElementById("terminal-ui");
+const loginBtn = document.getElementById("login-btn");
+const loginError = document.getElementById("login-error");
+
 const terminal = document.getElementById("terminal");
 const input = document.getElementById("command");
 const promptText = document.getElementById("prompt").textContent;
 
+let terminalEnabled = false;
 let history = [];
 let historyIndex = -1;
 
+// Handle Login
+loginBtn.addEventListener("click", async () => {
+  const username = document.getElementById("login-username").value.trim();
+  const password = document.getElementById("login-password").value;
+
+  try {
+    const res = await fetch("/login", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ username, password }),
+    });
+
+    const data = await res.json();
+
+    if (res.ok && data.success) {
+      loginScreen.style.display = "none";
+      terminalUI.style.display = "block";
+      terminalEnabled = true;
+      input.focus();
+    } else {
+      loginError.textContent = "Invalid credentials";
+    }
+  } catch (err) {
+    loginError.textContent = "Login request failed";
+  }
+});
+
+// Terminal typing output
 function appendOutput(text) {
   const line = document.createElement("div");
   line.className = "terminal-line";
@@ -32,17 +67,17 @@ function appendOutput(text) {
   typeChar();
 }
 
-
-
-
 function clearTerminal() {
   terminal.innerHTML = "";
 }
 
+// Terminal input handling
 input.addEventListener("keydown", async (e) => {
+  if (!terminalEnabled) return;
+
   const command = input.value.trim();
 
-  // Handle command history navigation
+  // History: Up arrow
   if (e.key === "ArrowUp") {
     e.preventDefault();
     if (history.length > 0 && historyIndex > 0) {
@@ -55,6 +90,7 @@ input.addEventListener("keydown", async (e) => {
     return;
   }
 
+  // History: Down arrow
   if (e.key === "ArrowDown") {
     e.preventDefault();
     if (historyIndex >= 0 && historyIndex < history.length - 1) {
@@ -67,17 +103,16 @@ input.addEventListener("keydown", async (e) => {
     return;
   }
 
-  // TAB for autocomplete
+  // Autocomplete: Tab key
   if (e.key === "Tab") {
     e.preventDefault();
-  
     try {
       const res = await fetch("/autocomplete", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ command }),
       });
-  
+
       const contentType = res.headers.get("content-type");
 
       if (contentType && contentType.includes("application/json")) {
@@ -89,14 +124,13 @@ input.addEventListener("keydown", async (e) => {
           input.value = suggestion;
         }
       }
-      
     } catch (err) {
       appendOutput("Autocomplete failed");
     }
+    return;
   }
-  
 
-  // ENTER to execute command
+  // Run command: Enter key
   if (e.key === "Enter") {
     appendOutput(promptText + " " + command);
     input.value = "";
@@ -105,6 +139,7 @@ input.addEventListener("keydown", async (e) => {
       clearTerminal();
       return;
     }
+
     if (command === "update") {
       const updateScript = "git pull";
       try {
@@ -120,8 +155,7 @@ input.addEventListener("keydown", async (e) => {
       }
       return;
     }
-    
-    // Save to history
+
     if (command) {
       history.push(command);
       historyIndex = -1;
