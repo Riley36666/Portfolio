@@ -128,8 +128,12 @@ app.post("/execute", (req, res) => {
   });
 });
 
-// Start Server
-app.listen(port, '0.0.0.0', () => {
-  console.log(`Server is running on http://0.0.0.0:${port}`);
-  console.log(`Server is now accessable!`);
-});
+
+try {
+  app.listen(port, '0.0.0.0', () => {
+    console.log(`Server is running on http://0.0.0.0:${port}`);
+    console.log(`Server is now accessible!`);
+  });
+} catch (err) {
+  console.error("🚨 Server failed to start:", err);
+}
