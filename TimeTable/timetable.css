@@ -74,4 +74,8 @@ h1 {
   .exam p {
     font-size: 0.95em;
   }
+  .test
+  {
+    display: none;
+  }
 }
