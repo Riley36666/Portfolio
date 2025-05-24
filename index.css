@@ -7,7 +7,7 @@
 
 body {
   font-family: 'Rubik', sans-serif;
-  background: linear-gradient(135deg, #1a1a2e, #16213e);
+  background: linear-gradient(135deg, #0d1b2a , #1e1e1e);
   color: #fff;
   line-height: 1.6;
   scroll-behavior: smooth;
@@ -21,14 +21,14 @@ body {
 
 /* Header */
 header {
-  background: linear-gradient(90deg, #0f0c29, #302b63, #24243e);
+  background: linear-gradient(90deg, #0f0c29, #302b63, #339705);
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
 }
 
 .logo {
   font-family: 'Orbitron', sans-serif;
   font-size: 2rem;
-  background: linear-gradient(45deg, #00f2fe, #4facfe);
+  background: linear-gradient(45deg, #339705, #3B3B98);
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -60,7 +60,7 @@ nav {
   position: absolute;
   width: 0;
   height: 2px;
-  background: #ff6ec4;
+  background: #1e1e1e;
   bottom: 0;
   left: 0;
   transition: 0.3s;
@@ -78,7 +78,7 @@ nav {
 #hero {
   text-align: center;
   padding: 6rem 2rem;
-  background: linear-gradient(135deg, #ff6ec4, #7873f5);
+  background: linear-gradient(135deg, #0f0c29, #302b63, #00ff88);
   color: white;
   border-bottom-left-radius: 60px;
   border-bottom-right-radius: 60px;
@@ -86,12 +86,12 @@ nav {
 }
 
 #hero h2 {
-  font-size: 3rem;
+  font-size: 4rem;
   font-weight: 700;
 }
 
 #hero p {
-  font-size: 1.5rem;
+  font-size: 1rem;
   margin-top: 1rem;
   color: #ffe;
 }
@@ -100,7 +100,7 @@ nav {
 section h2 {
   font-size: 2.5rem;
   margin-bottom: 1rem;
-  color: #ffccf9;
+  color: #339705;
 }
 
 section p {
@@ -110,8 +110,8 @@ section p {
 
 /* Project Cards */
 .project-card {
-  background: rgba(255, 255, 255, 0.08);
-  border: 1px solid rgba(255, 255, 255, 0.15);
+  background: rgba(0, 0, 0, 0.979);
+  border: 1px solid rgba(7, 247, 247, 0.973);
   border-radius: 16px;
   padding: 2rem;
   margin: 2rem 0;
@@ -122,18 +122,18 @@ section p {
 
 .project-card:hover {
   transform: translateY(-10px);
-  box-shadow: 0 30px 60px rgba(255, 110, 196, 0.4);
+  box-shadow: 0 30px 60px rgba(51, 12, 192, 0.4);
 }
 
 .project-card h3 {
   font-size: 1.5rem;
   margin-bottom: 0.5rem;
-  color: #00f2fe;
+  color: #339705;
 }
 
 /* Contact */
 #contact a {
-  color: #00f2fe;
+  color: #339705;
   text-decoration: none;
   font-weight: bold;
 }
@@ -144,7 +144,7 @@ section p {
 
 /* Footer */
 footer {
-  background: #111;
+  background: #0d1b2a;
   text-align: center;
   padding: 2rem;
   font-size: 1rem;
@@ -185,20 +185,25 @@ footer {
     padding: 0.5rem 0;
   }
 
-  #hero {
-    padding: 3rem 1rem;
-    text-align: center;
-    border-bottom-left-radius: 30px;
-    border-bottom-right-radius: 30px;
-  }
-
-  #hero h2 {
-    font-size: 2rem;
-  }
-
-  #hero p {
-    font-size: 1.1rem;
-  }
+.hero {
+  height: 100vh; /* fills full screen */
+  display: flex;
+  flex-direction: column;
+  justify-content: center; /* center vertically */
+  align-items: center;     /* center horizontally */
+  text-align: center;
+  background: linear-gradient(to right, #1a1a40, #00c878);
+  color: white;
+}
+.hero h1 {
+  color: #339705;
+  font-size: 3rem;
+  margin-bottom: 0.5rem;
+}
+.hero p {
+  font-size: 1.2rem;
+  align-items: center;
+}
 
   section h2 {
     font-size: 1.8rem;
@@ -212,10 +217,12 @@ footer {
   .project-card {
     padding: 1.5rem;
     margin: 1rem 0;
+    color: #339705;
   }
 
   .project-card h3 {
     font-size: 1.3rem;
+    color: #339705;
   }
 
   footer {
