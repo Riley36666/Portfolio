@@ -8,7 +8,7 @@ const cors = require('cors');
 const path = require('path');
 const { pathToFileURL } = require('url');
 const app = express();
-const port = 3000;
+const port = 9999;
 const { exec } = require('child_process');
 let currentDirectory = process.env.HOME || '/home/knowles/Portfolio'; // Starting dir
 
@@ -48,6 +48,13 @@ app.get("/", (req, res) => {
 app.get("/game", (req, res) => {
   res.sendFile(path.join(__dirname, "game", "game.html"));
 });
+app.get("/timetable", (req, res) => {
+  res.sendFile(path.join(__dirname, "TimeTable", "timetable.html"));
+})
+
+
+
+
 
 // Terminal Routes (dont touch)
 app.get("/terminal", (req, res) => {

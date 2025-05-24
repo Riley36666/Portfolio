@@ -1,0 +1,72 @@
+[
+  {
+    "subject": "Mathematics Paper 2 Tier H",
+    "date": "2025-06-04T09:00:00",
+    "room": "Main Hall",
+    "seat": "I2",
+    "duration": "1hr 30m"
+  },
+  {
+    "subject": "History (American West, Anglo-Saxon & Norman)",
+    "date": "2025-06-05T09:00:00",
+    "room": "Main Hall",
+    "seat": "F2",
+    "duration": "1hr 50m"
+  },
+  {
+    "subject": "English Language Paper 2",
+    "date": "2025-06-06T09:00:00",
+    "room": "Main Hall",
+    "seat": "F9",
+    "duration": "1hr 45m"
+  },
+  {
+    "subject": "Biology Paper 2 Tier F",
+    "date": "2025-06-09T09:00:00",
+    "room": "Main Hall",
+    "seat": "H11",
+    "duration": "1hr 45m"
+  },
+  {
+    "subject": "History (The USA)",
+    "date": "2025-06-10T13:10:00",
+    "room": "Main Hall",
+    "seat": "F2",
+    "duration": "1hr 30m"
+  },
+  {
+    "subject": "Mathematics Paper 3 Tier H",
+    "date": "2025-06-11T09:00:00",
+    "room": "Main Hall",
+    "seat": "I2",
+    "duration": "1hr 30m"
+  },
+  {
+    "subject": "Further Mathematics Paper 1",
+    "date": "2025-06-12T13:10:00",
+    "room": "Main Hall",
+    "seat": "C4",
+    "duration": "1hr 45m"
+  },
+  {
+    "subject": "Chemistry Paper 2 Tier H",
+    "date": "2025-06-13T09:00:00",
+    "room": "Main Hall",
+    "seat": "J16",
+    "duration": "1hr 45m"
+  },
+  {
+    "subject": "Physics Paper 2 Tier F",
+    "date": "2025-06-16T09:00:00",
+    "room": "Main Hall",
+    "seat": "H13",
+    "duration": "1hr 45m"
+  },
+  {
+    "subject": "Further Mathematics Paper 2",
+    "date": "2025-06-18T13:10:00",
+    "room": "Main Hall",
+    "seat": "C2",
+    "duration": "1hr 45m"
+  }
+]
