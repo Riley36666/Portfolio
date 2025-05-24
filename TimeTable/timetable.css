@@ -45,3 +45,33 @@ h1 {
   margin: 4px 0;
   color: #cccccc;
 }
+
+/* === Responsive Styling for Mobile === */
+@media (max-width: 600px) {
+  body {
+    padding: 10px;
+  }
+
+  .container {
+    padding: 20px;
+    border-radius: 8px;
+  }
+
+  h1 {
+    font-size: 1.6rem;
+    margin-bottom: 15px;
+  }
+
+  .exam {
+    padding: 12px;
+    margin-bottom: 8px;
+  }
+
+  .exam h3 {
+    font-size: 1.05em;
+  }
+
+  .exam p {
+    font-size: 0.95em;
+  }
+}
