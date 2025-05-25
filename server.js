@@ -11,7 +11,7 @@ const app = express();
 const port = 9999;
 const { exec } = require('child_process');
 let currentDirectory = process.env.HOME || '/home/knowles/Portfolio'; // Starting dir
-
+const notesRouter = require('./api/notes');
 
 // Middleware
 app.use(bodyParser.json());
@@ -57,7 +57,8 @@ app.get('/notes', (req, res) => {
 
 
 
-
+app.use(express.json());
+app.use('/api/notes', notesRouter);
 
 // Routes for notes
 const NOTES_FILE = path.join(__dirname, 'notes.json');

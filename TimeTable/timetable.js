@@ -28,7 +28,7 @@ function updateCountdowns(exams) {
 }
 
 // Fetch exam data from exams.json
-fetch('TimeTable/exams.json')
+fetch('exams.json')
   .then(response => response.json())
   .then(data => {
     updateCountdowns(data);
