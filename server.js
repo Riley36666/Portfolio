@@ -13,6 +13,7 @@ const { exec } = require('child_process');
 let currentDirectory = process.env.HOME || '/home/knowles/Portfolio'; // Starting dir
 const notesRouter = require('./api/notes');
 
+
 // Middleware
 app.use(bodyParser.json());
 app.use(cors({
@@ -55,41 +56,14 @@ app.get('/notes', (req, res) => {
   res.sendFile(path.join(__dirname, 'notes/notes.html'));
 });
 
+app.use(express.static('public'));
+
 
 
 app.use(express.json());
 app.use('/api/notes', notesRouter);
 
-// Routes for notes
-const NOTES_FILE = path.join(__dirname, 'notes.json');
 
-// Get all notes
-app.get('/api/notes', (req, res) => {
-  const data = fs.readFileSync(NOTES_FILE, 'utf8');
-  res.json(JSON.parse(data));
-});
-
-// Add a note
-app.post('/api/notes', (req, res) => {
-  const notes = JSON.parse(fs.readFileSync(NOTES_FILE, 'utf8'));
-  const newNote = {
-    id: Date.now(),
-    title: req.body.title,
-    content: req.body.content,
-    created: new Date().toISOString()
-  };
-  notes.push(newNote);
-  fs.writeFileSync(NOTES_FILE, JSON.stringify(notes, null, 2));
-  res.json(newNote);
-});
-
-// Delete a note
-app.delete('/api/notes/:id', (req, res) => {
-  let notes = JSON.parse(fs.readFileSync(NOTES_FILE, 'utf8'));
-  notes = notes.filter(note => note.id != req.params.id);
-  fs.writeFileSync(NOTES_FILE, JSON.stringify(notes, null, 2));
-  res.sendStatus(200);
-});
 
 
 

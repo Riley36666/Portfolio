@@ -7,14 +7,18 @@
   <link rel="stylesheet" href="notes.css">
 </head>
 <body>
-  <div class="container">
-    <h1>My Notes</h1>
-    <form id="note-form">
-      <input type="text" id="note-title" placeholder="Title" required />
-      <textarea id="note-content" placeholder="Content" required></textarea>
-      <button type="submit">Add Note</button>
-    </form>
-    <div id="notes-list"></div>
+  <div class="page">
+    <div class="sidebar">
+      <h1>📝 Notes</h1>
+      <form id="note-form">
+        <input type="text" id="note-title" placeholder="Untitled" required />
+        <textarea id="note-content" placeholder="Write something..." required></textarea>
+        <button type="submit">+ Add Note</button>
+      </form>
+    </div>
+    <div class="notes-container" id="notes-list">
+      <!-- Notes will appear here -->
+    </div>
   </div>
   <script src="notes.js"></script>
 </body>
