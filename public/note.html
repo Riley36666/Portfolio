@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Note Detail</title>
+  <link rel="stylesheet" href="notes.css">
+</head>
+<body>
+  <div class="container">
+    <button onclick="history.back()">← Back</button>
+    <div id="note-detail"></div>
+  </div>
+  <script>
+    // Grab the ID from the URL, e.g. /note.html?id=123
+    const params = new URLSearchParams(window.location.search);
+    const id = params.get('id');
+    fetch(`/api/notes/${id}`)
+      .then(r => r.json())
+      .then(note => {
+        document.getElementById('note-detail').innerHTML = `
+          <h2>${note.title}</h2>
+          <p>${note.content}</p>
+          <small>Created: ${new Date(note.created).toLocaleString()}</small>
+        `;
+      })
+      .catch(() => {
+        document.getElementById('note-detail').innerText = 'Note not found.';
+      });
+  </script>
+</body>
+</html>
