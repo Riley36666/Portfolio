@@ -58,7 +58,9 @@ app.get('/notes', (req, res) => {
 app.get('/cv', (req, res) => {
   res.sendFile(path.join(__dirname, 'cv/cv.html'));
 });
-
+app.get('/calendar', (req, res) => {
+  res.sendFile(path.join(__dirname, 'calendar/calendar.html'));
+});
 
 app.use(express.static('public'));
 
