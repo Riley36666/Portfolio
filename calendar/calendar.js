@@ -6,7 +6,7 @@ const calendar = document.getElementById("calendar");
   let currentDate = new Date();
   let events = JSON.parse(localStorage.getItem("calendarEvents")) || {};
 
-  const allowedIP = "90.240.45.255"; // 🔁 Replace with your real public IP
+  const allowedIP = "90.240.45.255";
   let canEdit = false;
 
   function renderCalendar() {

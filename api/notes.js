@@ -1,8 +1,10 @@
-const express = require('express');
-const fs = require('fs');
-const path = require('path');
+import express from 'express';
+import fs from 'fs';
+import path from 'path';
+import { fileURLToPath } from 'url';
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 const router = express.Router();
-
 const NOTES_FILE = path.join(__dirname, '..', 'notes.json');
 
 router.get('/', (req, res) => {
@@ -30,4 +32,5 @@ router.delete('/:id', (req, res) => {
   res.sendStatus(200);
 });
 
-module.exports = router;
+export default router;
+

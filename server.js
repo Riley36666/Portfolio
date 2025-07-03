@@ -1,18 +1,27 @@
 // Load environment variables
-require('dotenv').config();
+import dotenv from 'dotenv';
+dotenv.config();
 
 // Import dependencies
-const express = require('express');
-const bodyParser = require('body-parser');
-const cors = require('cors');
-const path = require('path');
-const { pathToFileURL } = require('url');
+import express from 'express';
+import bodyParser from 'body-parser';
+import cors from 'cors';
+import path from 'path';
+import { pathToFileURL, fileURLToPath } from 'url';
+import { exec } from 'child_process';
+import notesRouter from './api/notes.js';
+import { OpenAI } from 'openai';
 const app = express();
-const port = 9999;
-const { exec } = require('child_process');
-let currentDirectory = process.env.HOME || '/home/knowles/Portfolio'; // Starting dir
-const notesRouter = require('./api/notes');
-
+const router = express.Router();
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+const port = process.env.PORT | 9999
+const openai = new OpenAI({
+  apiKey: process.env.OPENAI_API_KEY, // set this in .env
+  baseURL: 'https://integrate.api.nvidia.com/v1'
+});
+import fs from 'fs';
+const CHAT_HISTORY_FILE = './ai/chatHistory.json';
 
 // Middleware
 app.use(bodyParser.json());
@@ -40,7 +49,16 @@ app.post("/login", (req, res) => {
 });
 
 
-
+function loadHistory() {
+  try {
+    return JSON.parse(fs.readFileSync(CHAT_HISTORY_FILE, 'utf-8'));
+  } catch {
+    return [];
+  }
+}
+function saveHistory(messages) {
+  fs.writeFileSync(CHAT_HISTORY_FILE, JSON.stringify(messages, null, 2));
+}
 
 
 app.get("/", (req, res) => {
@@ -62,6 +80,12 @@ app.get('/calendar', (req, res) => {
   res.sendFile(path.join(__dirname, 'calendar/calendar.html'));
 });
 
+app.get('/ai', (req, res) => {
+  res.sendFile(path.join(__dirname, 'ai/ai.html'));
+});
+
+
+
 app.use(express.static('public'));
 
 
@@ -71,6 +95,46 @@ app.use('/api/notes', notesRouter);
 
 
 
+app.post('/api/chat', async (req, res) => {
+  let history = loadHistory();
+  const userMessage = req.body.message;
+
+  // Optional: include system prompt to guide behavior
+  const systemPrompt = {
+    role: 'system',
+    content: 'You are a helpful assistant. Keep the conversation coherent and continuous.',
+  };
+
+  // Combine system prompt + history + new message
+  let messages = [systemPrompt, ...history, { role: 'user', content: userMessage }];
+
+  // Trim to most recent 20 exchanges (user + assistant = 40 messages)
+  const MAX_TURNS = 20;
+  const turnMessages = messages.filter(msg => msg.role === 'user' || msg.role === 'assistant');
+  const trimmedTurns = turnMessages.slice(-MAX_TURNS * 2);
+  messages = [systemPrompt, ...trimmedTurns, { role: 'user', content: userMessage }];
+
+  try {
+    const completion = await openai.chat.completions.create({
+      model: 'nvidia/llama-3.1-nemotron-70b-instruct',
+      messages,
+      temperature: 0.5,
+      max_tokens: 1024,
+    });
+
+    const reply = completion.choices[0].message.content;
+
+    // Append new messages to history and save
+    history.push({ role: 'user', content: userMessage });
+    history.push({ role: 'assistant', content: reply });
+    saveHistory(history);
+
+    res.json({ reply });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Something went wrong' });
+  }
+});
 
 
 
