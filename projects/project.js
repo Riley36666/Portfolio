@@ -17,8 +17,8 @@ document.addEventListener("DOMContentLoaded", () => {
         },
         {
           title: "Calandar app",
-          description: "My calandar!.",
-          github: `https://${website}/calandar`
+          description: "My calandar!",
+          github: `https://${website}/calendar`
         },
         {
           title: "Ai naughts and crosses game",
