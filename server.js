@@ -17,12 +17,13 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const port = process.env.PORT | 9999
 const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY, // set this in .env
+  apiKey: process.env.OPENAI_API_KEY,
   baseURL: 'https://integrate.api.nvidia.com/v1'
 });
 import fs from 'fs';
 const CHAT_HISTORY_FILE = './ai/chatHistory.json';
 
+const website = process.env.WEBSITE
 // Middleware
 app.use(bodyParser.json());
 app.use(cors({
@@ -79,15 +80,18 @@ app.get('/cv', (req, res) => {
 app.get('/calendar', (req, res) => {
   res.sendFile(path.join(__dirname, 'calendar/calendar.html'));
 });
-
 app.get('/ai', (req, res) => {
   res.sendFile(path.join(__dirname, 'ai/ai.html'));
 });
-
+app.get('/projects', (req, res) => {
+  res.sendFile(path.join(__dirname, 'projects/project.html'));
+});
+app.get('/api/website', (req, res) => {
+  res.json({ website: process.env.WEBSITE });
+});
 
 
 app.use(express.static('public'));
-
 
 
 app.use(express.json());
@@ -221,6 +225,7 @@ app.post("/execute", (req, res) => {
 try {
   app.listen(port, '0.0.0.0', () => {
     console.log(`Server is running on http://0.0.0.0:${port}`);
+    console.log(`Server is running on https://${website}`)
     console.log(`Server is now accessible!`);
   });
 } catch (err) {
