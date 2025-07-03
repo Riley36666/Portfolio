@@ -16,9 +16,9 @@ document.addEventListener("DOMContentLoaded", () => {
           live: `https://${website}/notes`
         },
         {
-          title: "Task Manager (WIP)",
-          description: "Organize your tasks efficiently and intuitively.",
-          github: "/"
+          title: "Calandar app",
+          description: "My calandar!.",
+          github: `https://${website}/calandar`
         },
         {
           title: "Ai naughts and crosses game",
