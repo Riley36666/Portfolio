@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Mini OS</title>
+  <link rel="stylesheet" href="mini-os/mini-os.css" />
+</head>
+<body>
+  <div class="desktop">
+    <!-- Desktop Icons -->
+    <div class="icon" data-app="notes">
+      <img src="mini-os/images/note.jpg" alt="Notes" />
+      <span>Notes</span>
+    </div>
+    <div class="icon" data-app="system-info">
+      <img src="mini-os\images\info.png" alt="System Info" />
+      <span>System Info</span>
+    </div>
+  </div>
+
+  <!-- App Windows (hidden by default) -->
+  <div id="notes-app" class="app-window hidden">
+    <div class="app-header">
+      <span>Notes</span>
+      <button onclick="closeApp('notes-app')">X</button>
+    </div>
+    <textarea placeholder="Write your notes here..."></textarea>
+  </div>
+
+  <div id="system-info-app" class="app-window hidden">
+    <div class="app-header">
+      <span>System Info</span>
+      <button onclick="closeApp('system-info-app')">X</button>
+    </div>
+    <div class="app-content" id="os-info">
+      Loading OS information...
+    </div>
+  </div>
+
+  <!-- Taskbar -->
+  <div class="taskbar">
+    <div class="start">Start</div>
+    <div class="clock" id="clock"></div>
+  </div>
+
+  <script src="mini-os/mini-os.js"></script>
+</body>
+</html>
