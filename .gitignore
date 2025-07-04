@@ -2,3 +2,4 @@ node_modules
 .vscode
 update.sh
 .env
+mini-os

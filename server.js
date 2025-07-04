@@ -22,6 +22,7 @@ const openai = new OpenAI({
 });
 import fs from 'fs';
 const CHAT_HISTORY_FILE = './ai/chatHistory.json';
+import os from 'os';
 
 const website = process.env.WEBSITE
 // Middleware
@@ -139,6 +140,30 @@ app.post('/api/chat', async (req, res) => {
     res.status(500).json({ error: 'Something went wrong' });
   }
 });
+
+
+app.get('/os', (req, res) => {
+  res.sendFile(path.join(__dirname, 'mini-os', 'mini-os.html'));
+});
+
+// new endpoint for os data
+app.get('/api/os-info', (req, res) => {
+  const osInfo = {
+    hostname: os.hostname(),
+    platform: os.platform(),
+    arch: os.arch(),
+    release: os.release(),
+    uptime: os.uptime(),
+    loadavg: os.loadavg(),
+    totalmem: os.totalmem(),
+    freemem: os.freemem(),
+    cpus: os.cpus(),
+    networkInterfaces: os.networkInterfaces(),
+  };
+  res.json(osInfo);
+});
+
+
 
 
 
