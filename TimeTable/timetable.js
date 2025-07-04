@@ -26,7 +26,7 @@ function updateCountdowns(exams) {
     }
   });
 }
-// Fetch exam data from exams.json
+// fetches from file
 fetch('TimeTable/exams.json')
   .then(response => response.json())
   .then(data => {

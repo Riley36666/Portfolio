@@ -52,14 +52,15 @@ async function resetChat() {
   document.getElementById('chat').innerHTML = '';
 }
 
-// Press Enter to send
+
+
 document.getElementById('userInput').addEventListener('keydown', function (e) {
   if (e.key === 'Enter') sendMessage();
 });
 
 document.getElementById('resetBtn').addEventListener('click', resetChat);
 
-// Load history on page load
+
 window.onload = loadChatHistory;
 
 function renderMarkdown(text) {

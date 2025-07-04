@@ -1,8 +1,6 @@
-// Load environment variables
 import dotenv from 'dotenv';
 dotenv.config();
-
-// Import dependencies
+// Imports
 import express from 'express';
 import bodyParser from 'body-parser';
 import cors from 'cors';
@@ -23,9 +21,7 @@ const openai = new OpenAI({
 import fs from 'fs';
 const CHAT_HISTORY_FILE = './ai/chatHistory.json';
 import os from 'os';
-
 const website = process.env.WEBSITE
-// Middleware
 app.use(bodyParser.json());
 app.use(cors({
   origin: '*',
@@ -104,16 +100,16 @@ app.post('/api/chat', async (req, res) => {
   let history = loadHistory();
   const userMessage = req.body.message;
 
-  // Optional: include system prompt to guide behavior
+
   const systemPrompt = {
     role: 'system',
     content: 'You are a helpful assistant. Keep the conversation coherent and continuous.',
   };
 
-  // Combine system prompt + history + new message
+
   let messages = [systemPrompt, ...history, { role: 'user', content: userMessage }];
 
-  // Trim to most recent 20 exchanges (user + assistant = 40 messages)
+
   const MAX_TURNS = 20;
   const turnMessages = messages.filter(msg => msg.role === 'user' || msg.role === 'assistant');
   const trimmedTurns = turnMessages.slice(-MAX_TURNS * 2);
@@ -129,7 +125,7 @@ app.post('/api/chat', async (req, res) => {
 
     const reply = completion.choices[0].message.content;
 
-    // Append new messages to history and save
+
     history.push({ role: 'user', content: userMessage });
     history.push({ role: 'assistant', content: reply });
     saveHistory(history);
@@ -142,11 +138,10 @@ app.post('/api/chat', async (req, res) => {
 });
 
 
+// This is just useless
 app.get('/os', (req, res) => {
   res.sendFile(path.join(__dirname, 'mini-os', 'mini-os.html'));
 });
-
-// new endpoint for os data
 app.get('/api/os-info', (req, res) => {
   const osInfo = {
     hostname: os.hostname(),
@@ -177,7 +172,8 @@ app.post("/autocomplete", (req, res) => {
   const fs = require('fs');
   const path = require('path');
 
-  // Split into command and argument
+
+
   const parts = command.trim().split(/\s+/);
   const cmd = parts[0];
   const arg = parts[1] || "";
@@ -196,13 +192,12 @@ app.post("/autocomplete", (req, res) => {
     }
   }
 
-  // Default: fallback to shell command autocomplete for normal commands
   const lastWord = command.split(" ").pop();
   const shellCmd = `bash -c 'compgen -c -- ${lastWord}'`;
 
   exec(shellCmd, (err, stdout, stderr) => {
     if (err || stderr) {
-      return res.send(command); // Return original on error
+      return res.send(command);
     }
 
     const suggestions = stdout.split("\n").filter(Boolean);
@@ -222,11 +217,11 @@ app.post("/autocomplete", (req, res) => {
 app.post("/execute", (req, res) => {
   const { command } = req.body;
 
-  // Handle 'cd' manually
+
   if (command.startsWith('cd ')) {
     const target = command.split('cd ')[1].trim();
 
-    // Resolve path
+
     const path = require('path');
     const newPath = path.resolve(currentDirectory, target);
 
@@ -239,7 +234,7 @@ app.post("/execute", (req, res) => {
     }
   }
 
-  // Otherwise, run the command in the currentDirectory
+
   exec(command, { cwd: currentDirectory }, (error, stdout, stderr) => {
     if (error) return res.send(`Error: ${stderr}`);
     res.send(stdout);

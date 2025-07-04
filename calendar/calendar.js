@@ -82,7 +82,6 @@ const calendar = document.getElementById("calendar");
     renderCalendar();
   };
 
-  // 🌐 Get user's public IP and check if editing is allowed
   fetch("https://api.ipify.org?format=json")
     .then(res => res.json())
     .then(data => {

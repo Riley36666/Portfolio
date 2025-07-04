@@ -8,16 +8,16 @@ let bullets = [];
 let enemies = [];
 let lastEnemySpawn = 0;
 const rocketImage = new Image();
-rocketImage.src = 'rocket.png'; // Make sure the rocket image is in the right path
+rocketImage.src = 'rocket.png';
 
-// Control buttons
+
 const shootButton = document.getElementById('shootButton');
 
 rocketImage.onload = () => {
   console.log("Rocket image loaded successfully!");
 };
 
-// Game Loop and Functions
+
 const checkCollision = (obj1, obj2) => {
   return (
     obj1.x < obj2.x + obj2.width &&
@@ -47,7 +47,7 @@ const gameLoop = () => {
 
   ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-  // Spawn enemies
+
   if (Date.now() - lastEnemySpawn > 1000) {
     enemies.push({
       x: Math.random() * (canvas.width - 30),
@@ -59,23 +59,23 @@ const gameLoop = () => {
     lastEnemySpawn = Date.now();
   }
 
-  // Update and draw bullets (rockets)
+
   bullets.forEach((bullet, index) => {
-    bullet.y -= bullet.speed; // Move the rocket upwards
+    bullet.y -= bullet.speed;
 
     if (bullet.y < -bullet.height) {
-      bullets.splice(index, 1); // Remove the rocket if it's off-screen
+      bullets.splice(index, 1); 
     } else {
-      // Draw the rocket image for the bullet
+ 
       ctx.drawImage(bullet.image, bullet.x, bullet.y, bullet.width, bullet.height);
     }
   });
 
-  // Update and draw enemies
+
   enemies.forEach((enemy, enemyIndex) => {
     enemy.y += enemy.speed;
 
-    // Check for collision with bullets
+  
     bullets.forEach((bullet, bulletIndex) => {
       if (checkCollision(bullet, enemy)) {
         enemies.splice(enemyIndex, 1);
@@ -85,7 +85,7 @@ const gameLoop = () => {
       }
     });
 
-    // Check for collision with player
+
     if (checkCollision(player, enemy)) {
       gameOver = true;
       if (score > highScore) {
@@ -97,55 +97,55 @@ const gameLoop = () => {
       document.getElementById('gameOver').style.display = 'flex';
     }
 
-    // Remove off-screen enemies
+
     if (enemy.y > canvas.height) {
       enemies.splice(enemyIndex, 1);
     }
 
-    // Draw enemy
+
     ctx.fillStyle = '#ff0000';
     ctx.fillRect(enemy.x, enemy.y, enemy.width, enemy.height);
   });
 
-  // Draw player using the rocket image
+
   ctx.drawImage(rocketImage, player.x, player.y, player.width, player.height);
 
   requestAnimationFrame(gameLoop);
 };
 
-// Shoot rocket function (triggered by the shoot button)
+
 const shootBullet = () => {
   if (gameOver) {
-    startNewGame(); // Restart game if it's over
+    startNewGame();
     return;
   }
 
-  // Push the rocket as a bullet, using the rocket image
+
   bullets.push({
-    x: player.x + player.width / 2 - 10, // Center the rocket horizontally
-    y: player.y,  // Start the rocket at the player's current position
-    width: 20,     // Set the width of the rocket
-    height: 40,    // Set the height of the rocket
-    image: rocketImage, // Use the rocket image
-    speed: 7        // Set the speed of the rocket
+    x: player.x + player.width / 2 - 10,
+    y: player.y, 
+    width: 20,    
+    height: 40,   
+    image: rocketImage, 
+    speed: 7      
   });
 };
 
-// Mouse move handler for desktop (or touch move on mobile)
+
 canvas.addEventListener('mousemove', (e) => {
   const rect = canvas.getBoundingClientRect();
   player.x = e.clientX - rect.left - player.width / 2;
 });
 
-// Add event listener for shooting (using canvas click)
+
 canvas.addEventListener('click', () => {
-  shootBullet(); // Call shootBullet when clicked on canvas
+  shootBullet(); 
 });
 
-// Mobile Shoot Button
+
 shootButton.addEventListener('click', () => {
-  shootBullet(); // Trigger shoot bullet on mobile button click
+  shootBullet(); 
 });
 
-// Start the game
+
 gameLoop();

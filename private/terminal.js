@@ -1,4 +1,3 @@
-// Elements
 const loginScreen = document.getElementById("login-screen");
 const terminalUI = document.getElementById("terminal-ui");
 const loginBtn = document.getElementById("login-btn");
@@ -12,7 +11,7 @@ let terminalEnabled = false;
 let history = [];
 let historyIndex = -1;
 
-// Handle Login
+
 loginBtn.addEventListener("click", async () => {
   const username = document.getElementById("login-username").value.trim();
   const password = document.getElementById("login-password").value;
@@ -39,7 +38,7 @@ loginBtn.addEventListener("click", async () => {
   }
 });
 
-// Terminal typing output
+
 function appendOutput(text) {
   const line = document.createElement("div");
   line.className = "terminal-line";
@@ -57,9 +56,9 @@ function appendOutput(text) {
       line.textContent += text.charAt(i);
       i++;
       terminal.scrollTop = terminal.scrollHeight;
-      setTimeout(typeChar, 10); // Typing speed
+      setTimeout(typeChar, 10); 
     } else {
-      terminal.removeChild(cursor); // Remove after typing
+      terminal.removeChild(cursor); 
       line.innerHTML += "<br>";
     }
   }
@@ -71,13 +70,13 @@ function clearTerminal() {
   terminal.innerHTML = "";
 }
 
-// Terminal input handling
+
 input.addEventListener("keydown", async (e) => {
   if (!terminalEnabled) return;
 
   const command = input.value.trim();
 
-  // History: Up arrow
+
   if (e.key === "ArrowUp") {
     e.preventDefault();
     if (history.length > 0 && historyIndex > 0) {
@@ -90,7 +89,7 @@ input.addEventListener("keydown", async (e) => {
     return;
   }
 
-  // History: Down arrow
+
   if (e.key === "ArrowDown") {
     e.preventDefault();
     if (historyIndex >= 0 && historyIndex < history.length - 1) {
@@ -103,7 +102,7 @@ input.addEventListener("keydown", async (e) => {
     return;
   }
 
-  // Autocomplete: Tab key
+
   if (e.key === "Tab") {
     e.preventDefault();
     try {
@@ -130,7 +129,6 @@ input.addEventListener("keydown", async (e) => {
     return;
   }
 
-  // Run command: Enter key
   if (e.key === "Enter") {
     appendOutput(promptText + " " + command);
     input.value = "";

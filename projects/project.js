@@ -8,7 +8,7 @@ document.addEventListener("DOMContentLoaded", () => {
         {
           title: "AI Chatbot",
           description: "A smart chatbot built using OpenAI's GPT API.",
-          live: `https://${website}/ai`, // added "//" here
+          live: `https://${website}/ai`, 
         },
         {
           title: "Notes app",
