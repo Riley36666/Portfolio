@@ -22,7 +22,7 @@ import fs from 'fs';
 const CHAT_HISTORY_FILE = './ai/chatHistory.json';
 import os from 'os';
 const website = process.env.WEBSITE
-const currentDirectory = process.env.HOME || '/home/knowles/Portfolio';
+let currentDirectory = process.env.HOME || '/home/knowles/Portfolio';
 app.use(bodyParser.json());
 app.use(cors({
   origin: '*',
