@@ -3,3 +3,7 @@ node_modules
 update.sh
 .env
 mini-os
+*.ts
+tsconfig.json
+dist
+.vs
