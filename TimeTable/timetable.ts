@@ -1,11 +1,12 @@
+type Exam = { date: string; name: string; room: string; seat: string };
 function updateCountdowns(exams: Exam[]): void {
   const now = new Date();
   const container = document.getElementById("examCountdown");
-  container.innerHTML = "";
+  if (container) container.innerHTML = "";
 
   exams.forEach(exam => {
-    const examDate = new Date(exam.date);
-    const diff = examDate - now;
+    const examDate = new Date(exam.date).getTime();
+    const diff = examDate - now.getTime();
 
     if (diff > 0) {
       const days = Math.floor(diff / (1000 * 60 * 60 * 24));
@@ -16,13 +17,13 @@ function updateCountdowns(exams: Exam[]): void {
       examElement.className = "exam";
 
       examElement.innerHTML = `
-        <h3>${exam.subject}</h3>
-        <p>📅 ${examDate.toDateString()} @ ${examDate.toLocaleTimeString([], {hour: '2-digit', minute: '2-digit'})}</p>
+        <h3>${exam.name}</h3>
+        <p>📅 ${new Date(exam.date).toDateString()} @ ${new Date(exam.date).toLocaleTimeString([], {hour: '2-digit', minute: '2-digit'})}</p>
         <p>📍 ${exam.room} — Seat ${exam.seat}</p>
         <p>⏳ ${days}d ${hours}h ${minutes}m left</p>
       `;
 
-      container.appendChild(examElement);
+      if (container) container.appendChild(examElement);
     }
   });
 }

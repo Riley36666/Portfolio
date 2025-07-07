@@ -1,11 +1,11 @@
-const canvas = document.getElementById('gameCanvas');
-const ctx = canvas.getContext('2d');
+const canvas = document.getElementById('canvas') as HTMLCanvasElement | null;
+const ctx = canvas ? canvas.getContext('2d') : null;
 let score = 0;
 let gameOver = false;
 let highScore = localStorage.getItem('spaceShooterHighScore') || 0;
 let player = { x: 375, y: 530, width: 50, height: 50 };
-let bullets = [];
-let enemies = [];
+let bullets: any[] = [];
+let enemies: any[] = [];
 let lastEnemySpawn = 0;
 const rocketImage = new Image();
 rocketImage.src = 'rocket.png';
@@ -18,7 +18,7 @@ rocketImage.onload = () => {
 };
 
 
-const checkCollision = (obj1, obj2) => {
+const checkCollision = (obj1: any, obj2: any): boolean => {
   return (
     obj1.x < obj2.x + obj2.width &&
     obj1.x + obj1.width > obj2.x &&
@@ -27,8 +27,9 @@ const checkCollision = (obj1, obj2) => {
   );
 };
 
-const updateScore = () => {
-  document.getElementById('score').textContent = score;
+const updateScore = (score: number) => {
+  const scoreEl = document.getElementById('score');
+  if (scoreEl) scoreEl.textContent = score.toString();
 };
 
 const startNewGame = () => {
@@ -37,20 +38,21 @@ const startNewGame = () => {
   enemies = [];
   bullets = [];
   lastEnemySpawn = 0;
-  document.getElementById('gameOver').style.display = 'none';
-  updateScore();
+  const gameOverEl = document.getElementById('gameOver');
+  if (gameOverEl) gameOverEl.style.display = 'none';
+  updateScore(score);
   gameLoop();
 };
 
 const gameLoop = () => {
   if (gameOver) return;
 
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  ctx?.clearRect(0, 0, canvas?.width || 0, canvas?.height || 0);
 
 
   if (Date.now() - lastEnemySpawn > 1000) {
     enemies.push({
-      x: Math.random() * (canvas.width - 30),
+      x: Math.random() * (canvas?.width || 0 - 30),
       y: -30,
       width: 30,
       height: 30,
@@ -67,7 +69,7 @@ const gameLoop = () => {
       bullets.splice(index, 1); 
     } else {
  
-      ctx.drawImage(bullet.image, bullet.x, bullet.y, bullet.width, bullet.height);
+      ctx?.drawImage(bullet.image, bullet.x, bullet.y, bullet.width, bullet.height);
     }
   });
 
@@ -81,34 +83,32 @@ const gameLoop = () => {
         enemies.splice(enemyIndex, 1);
         bullets.splice(bulletIndex, 1);
         score += 100;
-        updateScore();
+        updateScore(score);
       }
     });
 
 
     if (checkCollision(player, enemy)) {
       gameOver = true;
-      if (score > highScore) {
+      if (score > Number(highScore)) {
         highScore = score;
-        localStorage.setItem('spaceShooterHighScore', highScore);
+        localStorage.setItem('spaceShooterHighScore', highScore.toString());
       }
-      document.getElementById('finalScore').textContent = score;
-      document.getElementById('highScore').textContent = highScore;
-      document.getElementById('gameOver').style.display = 'flex';
+      showGameOver(score, highScore);
     }
 
 
-    if (enemy.y > canvas.height) {
+    if (canvas && typeof canvas.height === 'number' && enemy.y > canvas.height) {
       enemies.splice(enemyIndex, 1);
     }
 
 
-    ctx.fillStyle = '#ff0000';
-    ctx.fillRect(enemy.x, enemy.y, enemy.width, enemy.height);
+    if (ctx) ctx.fillStyle = '#ff0000';
+    ctx?.fillRect(enemy.x, enemy.y, enemy.width, enemy.height);
   });
 
 
-  ctx.drawImage(rocketImage, player.x, player.y, player.width, player.height);
+  ctx?.drawImage(rocketImage, player.x, player.y, player.width, player.height);
 
   requestAnimationFrame(gameLoop);
 };
@@ -132,20 +132,29 @@ const shootBullet = () => {
 };
 
 
-canvas.addEventListener('mousemove', (e) => {
+canvas?.addEventListener('mousemove', (e) => {
   const rect = canvas.getBoundingClientRect();
   player.x = e.clientX - rect.left - player.width / 2;
 });
 
 
-canvas.addEventListener('click', () => {
+canvas?.addEventListener('click', () => {
   shootBullet(); 
 });
 
 
-shootButton.addEventListener('click', () => {
+shootButton?.addEventListener('click', () => {
   shootBullet(); 
 });
 
 
 gameLoop();
+
+function showGameOver(score: number, highScore: number | string) {
+  const finalScoreEl = document.getElementById('finalScore');
+  if (finalScoreEl) finalScoreEl.textContent = score.toString();
+  const highScoreEl = document.getElementById('highScore');
+  if (highScoreEl) highScoreEl.textContent = highScore.toString();
+  const gameOverEl = document.getElementById('gameOver');
+  if (gameOverEl) gameOverEl.style.display = 'flex';
+}

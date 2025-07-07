@@ -12,7 +12,7 @@ const app = express();
 const router = express.Router();
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-const port = process.env.PORT | 9999;
+const port = Number(process.env.PORT) || 9999;
 const openai = new OpenAI({
     apiKey: process.env.OPENAI_API_KEY,
     baseURL: 'https://integrate.api.nvidia.com/v1'

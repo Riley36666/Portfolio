@@ -24,7 +24,7 @@ router.post('/', (req, res) => {
 });
 router.delete('/:id', (req, res) => {
     let notes = JSON.parse(fs.readFileSync(NOTES_FILE, 'utf8'));
-    notes = notes.filter(note => note.id != req.params.id);
+    notes = notes.filter((note) => note.id != req.params.id);
     fs.writeFileSync(NOTES_FILE, JSON.stringify(notes, null, 2));
     res.sendStatus(200);
 });

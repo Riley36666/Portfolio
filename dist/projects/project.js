@@ -38,7 +38,8 @@ document.addEventListener("DOMContentLoaded", () => {
             ${project.live ? `<a href="${project.live}" target="_blank">Live Site</a>` : ""}
           </div>
         `;
-            projectList.appendChild(card);
+            if (projectList)
+                projectList.appendChild(card);
         });
     })
         .catch(err => console.error("Failed to load website URL:", err));

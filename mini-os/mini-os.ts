@@ -6,8 +6,8 @@ icons.forEach(icon => {
   });
 
   icon.addEventListener('dblclick', () => {
-    const appName = icon.dataset.app;
-    launchApp(appName);
+    const appName = (icon as HTMLElement).dataset.app;
+    if (appName) launchApp(appName);
   });
 });
 
@@ -22,46 +22,54 @@ function launchApp(appName: string) {
 
 function launchNotesApp() {
   const app = document.getElementById('notes-app');
-  const test = "Notes app"
-  app.classList.remove('hidden');
+  const test = "Notes app";
+  if (app) {
+    app.classList.remove('hidden');
+    focusApp(app, test);
+  }
   console.log("Notes app openned")
-  focusApp(app, test);
 }
 
 function launchSystemInfoApp() {
-  const test = "Info App"
+  const test = "Info App";
   const app = document.getElementById('system-info-app');
-  app.classList.remove('hidden');
-  document.getElementById('os-info').innerText = `
-    OS Name: Mini OS
-    Version: 1.0.0
-    Uptime: ${Math.floor(performance.now() / 1000)} seconds
-    User Agent: ${navigator.userAgent}
-  `;
-  focusApp(app, test);
+  if (app) {
+    app.classList.remove('hidden');
+    const osInfo = document.getElementById('os-info');
+    if (osInfo) osInfo.innerText = `
+      OS Name: Mini OS
+      Version: 1.0.0
+      Uptime: ${Math.floor(performance.now() / 1000)} seconds
+      User Agent: ${navigator.userAgent}
+    `;
+    focusApp(app, test);
+  }
 }
 
 
 function closeApp(id: string) {
-  document.getElementById(id).classList.add('hidden');
+  const el = document.getElementById(id);
+  if (el) el.classList.add('hidden');
 }
 
 
 function focusApp(app: HTMLElement, test: string) {
   console.log(`App openned:` + test)
   document.querySelectorAll('.app-window').forEach(win => {
-    win.style.zIndex = 0;
+    (win as HTMLElement).style.zIndex = '0';
   });
-  app.style.zIndex = 10;
+  app.style.zIndex = '10';
 }
 
-let offsetX, offsetY, currentDrag: HTMLElement | null;
+let offsetX: number, offsetY: number, currentDrag: HTMLElement | null;
 
 document.querySelectorAll('.app-header').forEach(header => {
-  header.addEventListener('mousedown', (e: MouseEvent) => {
+  header.addEventListener('mousedown', (e) => {
+    const mouseEvent = e as MouseEvent;
     currentDrag = header.parentElement as HTMLElement;
-    offsetX = e.clientX - currentDrag.offsetLeft;
-    offsetY = e.clientY - currentDrag.offsetTop;
+    offsetX = mouseEvent.clientX - currentDrag.offsetLeft;
+    offsetY = mouseEvent.clientY - currentDrag.offsetTop;
+    const test = 'drag';
     focusApp(currentDrag, test);
 
     document.addEventListener('mousemove', onDrag);
@@ -81,13 +89,16 @@ function onDrag(e: MouseEvent) {
 
 function updateClock() {
   const clock = document.getElementById('clock');
-  const now = new Date();
-  clock.textContent = now.toLocaleTimeString();
+  if (clock) {
+    const now = new Date();
+    clock.textContent = now.toLocaleTimeString();
+  }
 }
 setInterval(updateClock, 1000);
 updateClock();
 
 
-document.querySelector('.start').addEventListener('click', () => {
+const startBtn = document.querySelector('.start');
+if (startBtn) startBtn.addEventListener('click', () => {
   console.log("pressed")
 });

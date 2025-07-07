@@ -13,7 +13,7 @@ const app = express();
 const router = express.Router();
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-const port = process.env.PORT | 9999
+const port = Number(process.env.PORT) || 9999;
 const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
   baseURL: 'https://integrate.api.nvidia.com/v1'
@@ -30,7 +30,7 @@ app.use(cors({
 }));
 app.use(express.static(__dirname));
 
-app.post("/login", (req, res) => {
+app.post("/login", (req: any, res: any) => {
   const { username, password } = req.body;
 
   console.log("Login attempt:", username, password);
@@ -54,7 +54,7 @@ function loadHistory() {
     return [];
   }
 }
-function saveHistory(messages) {
+function saveHistory(messages: any[]) {
   fs.writeFileSync(CHAT_HISTORY_FILE, JSON.stringify(messages, null, 2));
 }
 

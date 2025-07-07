@@ -1,10 +1,27 @@
 "use strict";
-const calendar = document.getElementById("calendar");
-const monthYear = document.getElementById("monthYear");
-const prevMonthBtn = document.getElementById("prevMonth");
-const nextMonthBtn = document.getElementById("nextMonth");
 let currentDate = new Date();
-let events = JSON.parse(localStorage.getItem("calendarEvents")) || {};
+const calendar = document.getElementById("calendar");
+if (calendar) {
+    calendar.innerHTML = "";
+}
+const monthYear = document.getElementById("monthYear");
+if (monthYear)
+    monthYear.textContent = `${currentDate.toLocaleString("default", {
+        month: "long"
+    })} ${currentDate.getFullYear()}`;
+const prevMonthBtn = document.getElementById("prevMonth");
+if (prevMonthBtn)
+    prevMonthBtn.onclick = () => {
+        currentDate.setMonth(currentDate.getMonth() - 1);
+        renderCalendar();
+    };
+const nextMonthBtn = document.getElementById("nextMonth");
+if (nextMonthBtn)
+    nextMonthBtn.onclick = () => {
+        currentDate.setMonth(currentDate.getMonth() + 1);
+        renderCalendar();
+    };
+let events = JSON.parse(localStorage.getItem("calendarEvents") || '{}');
 const allowedIP = "90.240.45.255";
 let canEdit = false;
 function renderCalendar() {
@@ -13,20 +30,19 @@ function renderCalendar() {
     const month = currentDate.getMonth();
     const firstDay = new Date(year, month, 1).getDay(); // 0 = Sunday
     const lastDate = new Date(year, month + 1, 0).getDate();
-    monthYear.textContent = `${currentDate.toLocaleString("default", {
-        month: "long",
-    })} ${year}`;
     const days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
     days.forEach((day) => {
         const dayEl = document.createElement("div");
         dayEl.className = "day-name";
         dayEl.textContent = day;
-        calendar.appendChild(dayEl);
+        if (calendar)
+            calendar.appendChild(dayEl);
     });
     for (let i = 0; i < firstDay; i++) {
         const blank = document.createElement("div");
         blank.className = "day blank";
-        calendar.appendChild(blank);
+        if (calendar)
+            calendar.appendChild(blank);
     }
     for (let d = 1; d <= lastDate; d++) {
         const date = new Date(year, month, d);
@@ -57,17 +73,10 @@ function renderCalendar() {
                 renderCalendar();
             }
         });
-        calendar.appendChild(dayBox);
+        if (calendar)
+            calendar.appendChild(dayBox);
     }
 }
-prevMonthBtn.onclick = () => {
-    currentDate.setMonth(currentDate.getMonth() - 1);
-    renderCalendar();
-};
-nextMonthBtn.onclick = () => {
-    currentDate.setMonth(currentDate.getMonth() + 1);
-    renderCalendar();
-};
 fetch("https://api.ipify.org?format=json")
     .then(res => res.json())
     .then(data => {
